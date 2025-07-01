@@ -1,12 +1,62 @@
-# React + Vite
+# Inventory Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<details>
+<summary>
+1. Initialise your project
+</summary>
 
-Currently, two official plugins are available:
+1.1 Bootstrap your project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```sh
+bun create vite@latest
+```
+I chose react, javascript-swc.
 
-## Expanding the ESLint configuration
+1.2 Install additionally required packages and dependencies (I kept adding as i went on about building the project)- 
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```sh
+bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @reduxjs/toolkit react-redux
+```
+
+</details>
+
+<details>
+<summary>
+2. Generate Mock data for the site
+</summary>
+
+I used [Mockaroo](https://mockaroo.com/) for generating mock data, which fortunately contained US hospitals data
+
+<details>
+<summary>
+2.1 Facilities
+</summary>
+<img src="backend\Facilities data fields.PNG">
+</details>
+
+<details>
+<summary>
+2.2 Devices
+</summary>
+
+I took 15 device types => `[X-ray machine, Ultrasound machine, MRI machine, CT scanner, Defibrillator, Ventilator, EKG machine, Infusion pump, Anesthesia machine, Blood pressure monitor, Pulse oximeter, Surgical laser, Autoclave, Electrocardiograph, Nebulizer]`
+
+Distributed in 10 different wards => `[Emergency Room, Intensive Care Unit, Operating Room, Pediatrics Ward, Cardiology Ward, Radiology Department, Labor and Delivery, Neurology Ward, Orthopedics Ward, Oncology Ward]`
+
+<img src="backend/Devicedistribution in wards.PNG">
+
+And these are the device details/fields, each `deviceType` pertaining to a unique `deviceID` -
+
+<img src="backend/Device data fields.PNG">
+
+According to my mock data of `facilities` - 100 in number, which had `number of devices` ranging from 7 to 44 which i set on a whim, the total number of devices came to be `2505`, but the limit on `Mockaroo` is max 1000 free rows.
+
+```js
+const totalDeviceCount = facilities.reduce((total, facility) => {
+    return total + facility.deviceCount;
+}, 0);
+console.log(`Total deviceCount: ${totalDeviceCount}`); //2505
+```
+
+</details>
+</details>
