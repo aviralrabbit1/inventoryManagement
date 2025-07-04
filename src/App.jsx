@@ -1,39 +1,37 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import facilities from '../backend/Facilities.js'
+import Sidebar from './components/Layout/Sidebar.jsx'
+import Header from './components/Layout/Header.jsx'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Dashboard from './pages/Dashboard.jsx'
+import DeviceInventory from './pages/DeviceInventory.jsx'
+import InstallationTraining from './pages/InstallationTraining.jsx'
+import ServiceVisits from './pages/ServiceVisits.jsx';
+import AMCTracker from './pages/AMCTracker.jsx';
+import Alerts from './pages/Alerts.jsx';
 
 function App() {
-  const [count, setCount] = useState(0);
-  console.log(facilities);
-  const totalDeviceCount = facilities.reduce((total, facility) => {
-    return total + facility.deviceCount;
-}, 0);
-console.log(`Total deviceCount: ${totalDeviceCount}`);
+//   console.log(facilities);
+//   const totalDeviceCount = facilities.reduce((total, facility) => {
+//     return total + facility.deviceCount;
+// }, 0);
+// console.log(`Total deviceCount: ${totalDeviceCount}`);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Router>
+        <Sidebar />
+        <Header/>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/inventory" element={<DeviceInventory />} />
+          <Route path="/installation" element={<InstallationTraining />} />
+          <Route path="/service" element={<ServiceVisits />} />
+          <Route path="/amc" element={<AMCTracker />} />
+          <Route path="/alerts" element={<Alerts />} />
+        </Routes>
+      </Router>
     </>
   )
 }
