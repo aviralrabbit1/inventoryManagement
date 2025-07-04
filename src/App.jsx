@@ -16,15 +16,15 @@ import Main from './components/Layout/Main.jsx'
 import facilities from './data/facilities.js'
 
 function App() {
-  console.log(facilities);
+  // console.log(facilities);
   // console.log(devices)
-  let common = devices.filter(i => facilities.some(f => f.facilityNPI === i.facilityId));
-  console.log(common);
+  // let common = devices.filter(i => facilities.some(f => f.facilityNPI === i.facilityID));
+  // console.log(common);
 
-  const totalDeviceCount = facilities.reduce((total, facility) => {
-    return total + facility.deviceCount;
-}, 0);
-console.log(`Total deviceCount: ${totalDeviceCount}`);
+//   const totalDeviceCount = facilities.reduce((total, facility) => {
+//     return total + facility.deviceCount;
+// }, 0);
+// console.log(`Total deviceCount: ${totalDeviceCount}`);
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
   const theme = createTheme({

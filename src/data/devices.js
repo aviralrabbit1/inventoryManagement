@@ -1,5 +1,4 @@
-{
-    "devices": [{"batteryLevel":26,"contractType":"CMC","deviceID":"DEV012","deviceType":"Anesthesia machine, ","facilityID":"102","facilityNPI":"1023011921","installationDate":"2024-09-16","lastServiceDate":"2024-09-16","qrCode":"20lq18wm3ujFmZQNC","serialNo":"d7a50207-ca45-4","status":"maintenance"},
+const devices = [{"batteryLevel":26,"contractType":"CMC","deviceID":"DEV012","deviceType":"Anesthesia machine, ","facilityID":"102","facilityNPI":"1023011921","installationDate":"2024-09-16","lastServiceDate":"2024-09-16","qrCode":"20lq18wm3ujFmZQNC","serialNo":"d7a50207-ca45-4","status":"maintenance"},
 {"batteryLevel":86,"contractType":"CMC","deviceID":"DEV011","deviceType":"Electrocardiograph,","facilityID":"102","facilityNPI":"1023011657","installationDate":"2024-07-15","lastServiceDate":"2024-08-26","qrCode":"0w3iy8Gs6qhb4vuElhB","serialNo":"d7d2b7c9-da8e-4","status":"maintenance"},
 {"batteryLevel":29,"contractType":"AMC","deviceID":"DEV013","deviceType":"Defibrillator, ","facilityID":"103","facilityNPI":"1033112230","installationDate":"2024-07-28","lastServiceDate":"2024-08-18","qrCode":"rTGBurjx0AYN1wc9h6","serialNo":"6a920599-23d7-4","status":"maintenance"},
 {"batteryLevel":39,"contractType":"AMC","deviceID":"DEV001","deviceType":"Nebulizer","facilityID":"104","facilityNPI":"1043213911","installationDate":"2024-10-26","lastServiceDate":"2025-05-10","qrCode":"pVfSZD2wLr9XoKL0W","serialNo":"232ca800-9ff5-4","status":"maintenance"},
@@ -98,4 +97,6 @@
 {"batteryLevel":27,"contractType":"AMC","deviceID":"DEV013","deviceType":"Defibrillator, ","facilityID":"196","facilityNPI":"1962405878","installationDate":"2025-03-06","lastServiceDate":"2024-10-13","qrCode":"3LjlQd70caKKp8zMothi","serialNo":"51552b35-ade3-4","status":"online"},
 {"batteryLevel":100,"contractType":"AMC","deviceID":"DEV014","deviceType":"Blood pressure monitor, ","facilityID":"198","facilityNPI":"1982607115","installationDate":"2025-06-13","lastServiceDate":"2025-03-11","qrCode":"olm71keaDP","serialNo":"5579f9cb-5d64-4","status":"offline"},
 {"batteryLevel":91,"contractType":"AMC","deviceID":"DEV007","deviceType":" MRI machine, ","facilityID":"199","facilityNPI":"1992708531","installationDate":"2024-11-27","lastServiceDate":"2025-03-09","qrCode":"gOa8Wr7GJvZs3zHXPUZ","serialNo":"fec7163a-1d8b-4","status":"offline"},
-{"batteryLevel":95,"contractType":"CMC","deviceID":"DEV005","deviceType":" Infusion pump, ","facilityID":"199","facilityNPI":"1992708598","installationDate":"2025-01-31","lastServiceDate":"2025-05-27","qrCode":"Y42863Eh5AgMPfG4zd0","serialNo":"5d3a2487-e183-4","status":"maintenance"}]}
+{"batteryLevel":95,"contractType":"CMC","deviceID":"DEV005","deviceType":" Infusion pump, ","facilityID":"199","facilityNPI":"1992708598","installationDate":"2025-01-31","lastServiceDate":"2025-05-27","qrCode":"Y42863Eh5AgMPfG4zd0","serialNo":"5d3a2487-e183-4","status":"maintenance"}]
+
+export default devices;

@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { createSlice} from "react-redux";
 import { facilityAPI } from "../../services/localstorageAPI"
+import facilities from '../../data/facilities'
 
 const facilitySlice = createSlice({
   name: "facilities",
-  initialState,
+  initialState : facilities,
   reducers: {
     addFacility: (state, action) => {
       const newFacility = facilityAPI.create(action.payload)
