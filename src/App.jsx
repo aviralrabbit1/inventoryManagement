@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import facilities from '../backend/Facilities.js'
+// import facilities from '../backend/Facilities.js'
+import devices from '../backend/Devices.js'
 import Sidebar from './components/Layout/Sidebar.jsx'
 import Header from './components/Layout/Header.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -12,13 +13,18 @@ import AMCTracker from './pages/AMCTracker.jsx';
 import Alerts from './pages/Alerts.jsx';
 import { Box, ThemeProvider, createTheme } from "@mui/material";
 import Main from './components/Layout/Main.jsx'
+import facilities from './data/facilities.js'
 
 function App() {
-//   console.log(facilities);
-//   const totalDeviceCount = facilities.reduce((total, facility) => {
-//     return total + facility.deviceCount;
-// }, 0);
-// console.log(`Total deviceCount: ${totalDeviceCount}`);
+  console.log(facilities);
+  // console.log(devices)
+  let common = devices.filter(i => facilities.some(f => f.facilityNPI === i.facilityId));
+  console.log(common);
+
+  const totalDeviceCount = facilities.reduce((total, facility) => {
+    return total + facility.deviceCount;
+}, 0);
+console.log(`Total deviceCount: ${totalDeviceCount}`);
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
   const theme = createTheme({

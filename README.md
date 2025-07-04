@@ -115,6 +115,103 @@ const attachments = ["service_report_001.pdf", "maintenance_report_001.pdf", "ca
 ```
 </details>
 
+<details>
+<summary>
+2.4 Postgres Database
+</summary>
+After much pondering and searching, i built a postgres database on [Tonic Fabricate](https://fabricate.tonic.ai/) with this schema (and some tweakings) and build api on top of it.
+
+```sql
+-- Create the device types table
+CREATE TABLE device_types (
+    deviceID VARCHAR(6) PRIMARY KEY CHECK (deviceID GLOB 'DEV00[1-9]' OR deviceID GLOB 'DEV01[0-5]'),
+    deviceName VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Create the facilities table
+CREATE TABLE facilities (
+    facilityNPI VARCHAR(15) PRIMARY KEY,
+    facilityID VARCHAR(3) GENERATED ALWAYS AS (SUBSTR(facilityNPI, 1, 3)) STORED NOT NULL,
+    facilityName VARCHAR(255) NOT NULL,
+    city VARCHAR(100),
+    address VARCHAR(255),
+    personInCharge VARCHAR(100),
+    contactPIC VARCHAR(15),
+    emailPIC VARCHAR(100),
+    deviceCount INT,
+    CONSTRAINT unique_facilityID UNIQUE (facilityID)  -- Ensure facilityID is unique
+);
+
+-- Create the devices table
+CREATE TABLE devices (
+    serialNo VARCHAR(15) PRIMARY KEY,  -- Unique identifier for devices
+    deviceID VARCHAR(6) NOT NULL CHECK (deviceID GLOB 'DEV00[1-9]' OR deviceID GLOB 'DEV01[0-5]'),
+    facilityNPI VARCHAR(15) REFERENCES facilities(facilityNPI) ON DELETE CASCADE,  -- Link to facilities
+    facilityID VARCHAR(3) GENERATED ALWAYS AS (SUBSTR(facilityNPI, 1, 3)) STORED NOT NULL,  -- Auto-generated from NPI
+    status VARCHAR(15),
+    contractType VARCHAR(3),
+    batteryLevel INT CHECK (batteryLevel BETWEEN 0 AND 100),
+    installationDate DATE,
+    lastServiceDate DATE,
+    qrCode VARCHAR(255)
+);
+
+-- Create the serviceVisits table
+CREATE TABLE serviceVisits (
+    id VARCHAR(10) PRIMARY KEY,
+    serialNo VARCHAR(15) REFERENCES devices(serialNo) ON DELETE CASCADE,  -- Link to devices
+    facilityNPI VARCHAR(15) REFERENCES facilities(facilityNPI) ON DELETE CASCADE,  -- Link to facilities
+    facilityID VARCHAR(3) REFERENCES facilities(facilityID) ON DELETE CASCADE,  -- Link to facilities
+    date DATE,
+    engineer VARCHAR(100),
+    purpose VARCHAR(15),  -- Limited to small array of words
+    notes TEXT,
+    attachments VARCHAR(255),
+    nextServiceDate DATE
+);
+
+-- Create the contracts table
+CREATE TABLE contracts (
+    id VARCHAR(10) PRIMARY KEY,
+    serialNo VARCHAR(15) REFERENCES devices(serialNo) ON DELETE CASCADE,  -- Link to devices
+    contractType VARCHAR(3),  -- This can be a reference to a predefined set of contract types
+    startDate DATE,
+    expiryDate DATE,
+    status VARCHAR(50),
+    cost INT CHECK (cost BETWEEN 100 AND 999),
+    vendor VARCHAR(100),
+    terms TEXT
+);
+```
+</details>
+<details>
+<summary>
+2.5 API
+</summary>
+</details>
+I build `api` on top of this postgres database.
+
+```js
+api
+  // List all facilities
+  .get('/facilities')
+  // Get a single facility
+  .get('/facilities/:id')
+  // List all service visits
+  .get('/services')
+  .get('/services/:id')
+  // Get a single service visit by serialNo and facilityNPI (composite key)
+  .get('/services/:facilityID/:serialNo')
+  // List all devices
+  .get('/devices')
+  // Get a single device by serialNo
+  .get('/devices/:serialNo')
+  // List all contracts
+  .get('/contracts')
+  // Get a single contract by id
+  .get('/contracts/:id')
+```
+
 </details>
 
 <details>
