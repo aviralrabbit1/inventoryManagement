@@ -10,6 +10,7 @@ import InstallationTraining from './pages/InstallationTraining.jsx'
 import ServiceVisits from './pages/ServiceVisits.jsx';
 import AMCTracker from './pages/AMCTracker.jsx';
 import Alerts from './pages/Alerts.jsx';
+import { Box, ThemeProvider, createTheme } from "@mui/material";
 
 function App() {
 //   console.log(facilities);
@@ -17,22 +18,45 @@ function App() {
 //     return total + facility.deviceCount;
 // }, 0);
 // console.log(`Total deviceCount: ${totalDeviceCount}`);
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [darkMode, setDarkMode] = useState(false)
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? "dark" : "light",
+      primary: {
+        main: "#1976d2",
+      },
+      secondary: {
+        main: "#dc004e",
+      },
+    },
+  })
 
   return (
-    <>
-      <Router>
-        <Sidebar />
-        <Header/>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/inventory" element={<DeviceInventory />} />
-          <Route path="/installation" element={<InstallationTraining />} />
-          <Route path="/service" element={<ServiceVisits />} />
-          <Route path="/amc" element={<AMCTracker />} />
-          <Route path="/alerts" element={<Alerts />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <Box sx={{ display: "flex", minHeight: "100vh" }}>
+          <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+          <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+            <Header
+              onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+              darkMode={darkMode}
+              onThemeToggle={() => setDarkMode(!darkMode)}
+            />
+            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/inventory" element={<DeviceInventory />} />
+                <Route path="/installation" element={<InstallationTraining />} />
+                <Route path="/service" element={<ServiceVisits />} />
+                <Route path="/amc" element={<AMCTracker />} />
+                <Route path="/alerts" element={<Alerts />} />
+              </Routes>
+            </Box>
+          </Box>
+        </Box>
+      </ThemeProvider>
+    </Router>
   )
 }
 

@@ -113,7 +113,39 @@ Gas flow irregularities reported. Requires immediate attention before next surge
 
 const attachments = ["service_report_001.pdf", "maintenance_report_001.pdf", "calibration_cert_001.pdf", "installation_guide_001.pdf", "training_materials_001.pdf", "battery_test_001.pdf","diagnostic_report_001.pdf"]
 ```
-
 </details>
 
 </details>
+
+<details>
+<summary>
+3. Routing
+</summary>
+
+Set up basic routing in `App.jsx` and Charts/Analytics in `Dashboard.jsx`.
+
+```js
+// App.jsx
+<Routes>
+  <Route path="/" element={<Dashboard />} />
+  <Route path="/inventory" element={<DeviceInventory />} />
+  <Route path="/installation" element={<InstallationTraining />} />
+  <Route path="/service" element={<ServiceVisits />} />
+  <Route path="/amc" element={<AMCTracker />} />
+  <Route path="/alerts" element={<Alerts />} />
+</Routes>
+```
+
+```js
+// Dashboard.jsx
+<div className="charts-container">      
+  <AMCExpiryChart />
+  <DeviceStatusChart />
+  <FacilityDevicesChart />
+  <ServiceVisitsChart />
+  <BatteryLevelChart />
+</div>
+```
+
+</details>
+
