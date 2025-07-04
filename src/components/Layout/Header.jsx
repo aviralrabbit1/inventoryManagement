@@ -7,9 +7,9 @@ import {
 } from "@mui/icons-material"
 // import LightModeIcon from '@mui/icons-material/LightMode';
 // import {Brightness4Icon as DarkModeIcon} from '@mui/icons-material/Brightness4';
-const Header = ({ onMenuClick, darkMode, onThemeToggle }) => {
+const Header = ({ open, onMenuClick, darkMode, onThemeToggle }) => {
   return (
-    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar position="fixed" open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar>        
         <IconButton color="inherit" aria-label="open drawer" onClick={onMenuClick} edge="start" sx={{ mr: 2 }}>
           <MenuIcon />

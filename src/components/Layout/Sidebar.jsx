@@ -29,40 +29,40 @@ const Sidebar = ({ open }) => {
   const location = useLocation()
 
   return (
-    <Drawer
-      variant="persistent"
-      anchor="left"
-      open={open}
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
+      <Drawer
+        variant="persistent"
+        anchor="left"
+        open={open}
+        sx={{
           width: drawerWidth,
-          boxSizing: "border-box",
-        },
-      }}
-    >
-      <Toolbar>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <InventoryIcon color="primary" />
-          <Typography variant="h6" noWrap component="div">
-            Device CRM
-          </Typography>
-        </Box>
-      </Toolbar>
-      <List>
-        {menuItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)}>
-              <ListItemIcon>
-                <item.icon />
-              </ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Drawer>
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: {xs: '100vw', sm: drawerWidth},
+            boxSizing: "border-box",
+          },
+        }}
+      >
+        <Toolbar>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <InventoryIcon color="primary" />
+            <Typography variant="h6" noWrap component="div">
+              Device CRM
+            </Typography>
+          </Box>
+        </Toolbar>
+        <List>
+          {menuItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)}>
+                <ListItemIcon>
+                  <item.icon />
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
   )
 }
 

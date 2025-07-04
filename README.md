@@ -147,5 +147,32 @@ Set up basic routing in `App.jsx` and Charts/Analytics in `Dashboard.jsx`.
 </div>
 ```
 
+```js
+// Sidebar.jsx
+const menuItems = [
+  { text: "Dashboard", icon: DashboardIcon, path: "/" },
+  { text: "Device Inventory", icon: InventoryIcon, path: "/inventory" },
+  { text: "Installation & Training", icon: BuildIcon, path: "/installation" },
+  { text: "Service Visits", icon: AssignmentIcon, path: "/service" },
+  { text: "AMC/CMC Tracker", icon: DescriptionIcon, path: "/amc" },
+  { text: "Alerts & Photos", icon: WarningIcon, path: "/alerts" },
+]
+
+<Drawer>
+  <List>
+    {menuItems.map((item) => (
+      <ListItem key={item.text} disablePadding>
+        <ListItemButton selected={location.pathname === item.path} onClick={() => navigate(item.path)}>
+          <ListItemIcon>
+            <item.icon />
+          </ListItemIcon>
+          <ListItemText primary={item.text} />
+        </ListItemButton>
+      </ListItem>
+    ))}
+  </List>
+</Drawer>
+```
+
 </details>
 

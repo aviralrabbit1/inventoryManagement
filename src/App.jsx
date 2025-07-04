@@ -11,6 +11,7 @@ import ServiceVisits from './pages/ServiceVisits.jsx';
 import AMCTracker from './pages/AMCTracker.jsx';
 import Alerts from './pages/Alerts.jsx';
 import { Box, ThemeProvider, createTheme } from "@mui/material";
+import Main from './components/Layout/Main.jsx'
 
 function App() {
 //   console.log(facilities);
@@ -37,8 +38,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <Box sx={{ display: "flex", minHeight: "100vh" }}>
           <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
-          <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+          <Main open={sidebarOpen} sx={{ display: "flex", flexDirection: "column" }}>
             <Header
+              open={sidebarOpen}
               onMenuClick={() => setSidebarOpen(!sidebarOpen)}
               darkMode={darkMode}
               onThemeToggle={() => setDarkMode(!darkMode)}
@@ -53,7 +55,7 @@ function App() {
                 <Route path="/alerts" element={<Alerts />} />
               </Routes>
             </Box>
-          </Box>
+          </Main>
         </Box>
       </ThemeProvider>
     </Router>
