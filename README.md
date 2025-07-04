@@ -25,7 +25,36 @@ bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-r
 2. Generate Mock data for the site
 </summary>
 
-I used [Mockaroo](https://mockaroo.com/) for generating mock data, which fortunately contained US hospitals data
+I used [Mockaroo](https://mockaroo.com/) for generating mock data, which fortunately contained US hospitals data. I also used [Supabase](https://supabase.com/) to create a public database table with the mock data.
+
+Schema: 
+```
+A postgreSQL schema with example
+devices = {"deviceType":"Infusion pump","deviceID":"DEV08","serialNo":"4879338850","deviceLocationWard":"Operating Room","facilityID":"1861678757","status":"Offline","batteryLevel":11,"installationDate":"18/12/2023","lastServiceDate":"18/10/2024","amcExpiryDate":"15/06/2025"}
+
+const facilities = [{"facilityNPI":"1558573386","facilityName":"MERCY HOSPITAL SPRINGFIELD","facilityType":"Hospital","city":"SPRINGFIELD","address":"1235 E CHEROKEE ST ","personInCharge":"Law Moysey","contactPIC":"554-14-8011","emailPIC":"lmoysey0@china.com.cn","deviceCount":22}]
+
+serviceVisits = {"id":"SV01","deviceID":"DEV0[1-15]","serialNo":"2699738387","facilityNPI":"1124266762","date":"21/03/2025","engineer":"Derrik Leggis","purpose":"Preventive","notes":"Electrode connections cleaned.","attachments":"service_report_001.pdf","nextServiceDate":"16/08/2025"}
+
+amcContract = {
+    id: "AMC001",
+    deviceId: "DEV001",
+    serialNo: 2699738387,
+    deviceName: "VentMax Pro 3000",
+    "facilityNPI":"1124266762",
+    contractType: "AMC",
+    startDate: "2023-06-01",
+    endDate: "2024-06-01",
+    status: "Active",
+    cost: 12000,
+    vendor: "MedTech Solutions Inc.", \\ taken from an array of vendors
+    terms: "Quarterly maintenance visits, 24/7 emergency support, parts replacement included",
+  }
+
+facilitiesNPI is a foreign key from facilities to visits, amcContract and devices
+serialNo is foreign key from devices to serviceVisits, amcContract
+deviceID is foreign key from devices to amcContract, 
+```
 
 <details>
 <summary>
@@ -59,4 +88,32 @@ console.log(`Total deviceCount: ${totalDeviceCount}`); //2505
 ```
 
 </details>
+
+<details>
+<summary>
+2.3 Service Visits
+</summary>
+<img src="backend\Facilities data fields.PNG">
+
+Notes and attachment field values are taken randomly from -
+
+```js
+const Notes = [
+All systems functioning normally., 
+Replaced air filters and calibrated sensors.,
+Display flickering issue reported., 
+Investigating potential LCD panel failure., 
+Ordered replacement parts.,
+Battery test passed. Electrode pads checked and replaced.,
+Device not powering on. Suspected power supply failure. Scheduled for emergency repair.,
+New software update installed. System recalibrated. Staff training provided on new features.,
+Electrode connections cleaned., 
+Software updated to latest version.,
+Gas flow irregularities reported. Requires immediate attention before next surgery.]
+
+const attachments = ["service_report_001.pdf", "maintenance_report_001.pdf", "calibration_cert_001.pdf", "installation_guide_001.pdf", "training_materials_001.pdf", "battery_test_001.pdf","diagnostic_report_001.pdf"]
+```
+
+</details>
+
 </details>
