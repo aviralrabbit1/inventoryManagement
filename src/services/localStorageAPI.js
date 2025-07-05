@@ -7,7 +7,7 @@ const STORAGE_KEYS = {
     DEVICES: "devices",
     FACILITIES: "facilities",
     SERVICE_VISITS: "service_visits",
-    AMC_CONTRACTS: "amc_contracts",
+    CONTRACTS: "contracts",
     ALERTS: "alerts",
     INSTALLATION_RECORDS: "installation_records",
     INITIALIZED: "initialized",
@@ -19,6 +19,9 @@ export const initializeLocalStorage = () => {
 
   if (!isInitialized) {
     localStorage.setItem(STORAGE_KEYS.FACILITIES, JSON.stringify(facilities))
+    localStorage.setItem(STORAGE_KEYS.DEVICES, JSON.stringify(devices))
+    localStorage.setItem(STORAGE_KEYS.CONTRACTS, JSON.stringify(contracts))
+    localStorage.setItem(STORAGE_KEYS.SERVICE_VISITS, JSON.stringify(serviceVisits))
     localStorage.setItem(STORAGE_KEYS.INITIALIZED, "true")
   }
 }
@@ -42,31 +45,33 @@ const saveToStorage = (key, data) => {
   }
 }
 
-// Facility API
-export const facilityAPI = {
-  getAll: ()=> getFromStorage(STORAGE_KEYS.FACILITIES, facilities),
-  
-  create: (facility) => {
-    const facilities = facilityAPI.getAll()
-    facilities.push(facility)
-    saveToStorage(STORAGE_KEYS.FACILITIES, facilities)
-    return facility
-  },
-  
-  update: (id, updatedFacility) => {
-    const facilities = facilityAPI.getAll()
-    const index = facilities.findIndex(f => f.id === id)
-    if (index !== -1) {
-      facilities[index] = updatedFacility
-      saveToStorage(STORAGE_KEYS.FACILITIES, facilities)
+const createAPI = (storageKey, initialData) => ({
+    getAll: () => getFromStorage(storageKey, initialData),
+    create: (item) => {
+        const items = createAPI(storageKey, initialData).getAll();
+        items.push(item);
+        saveToStorage(storageKey, items);
+        return item;
+    },
+    update: (id, updatedItem) => {
+        const items = createAPI(storageKey, initialData).getAll();
+        const index = items.findIndex(i => i.id === id);
+        if (index !== -1) {
+            items[index] = { ...items[index], ...updatedItem };
+            saveToStorage(storageKey, items);
+        }
+        return updatedItem;
+    },
+    delete: (id) => {
+        const items = createAPI(storageKey, initialData).getAll();
+        const filteredItems = items.filter(i => i.id !== id);
+        saveToStorage(storageKey, filteredItems);
+        return true;
     }
-    return updatedFacility
-  },
-  
-  delete: (id) => {
-    const facilities = facilityAPI.getAll()
-    const filteredFacilities = facilities.filter(f => f.id !== id)
-    saveToStorage(STORAGE_KEYS.FACILITIES, filteredFacilities)
-    return true
-  }
-}
+});
+
+// Creating specific APIs for each data type
+export const facilityAPI = createAPI(STORAGE_KEYS.FACILITIES, facilities);
+export const deviceAPI = createAPI(STORAGE_KEYS.DEVICES, devices);
+export const serviceVisitAPI = createAPI(STORAGE_KEYS.SERVICE_VISITS, serviceVisits);
+export const contractAPI = createAPI(STORAGE_KEYS.AMC_CONTRACTS, contracts);

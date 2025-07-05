@@ -188,7 +188,6 @@ CREATE TABLE contracts (
 <summary>
 2.5 API
 </summary>
-</details>
 I build `api` on top of this postgres database.
 
 ```js
@@ -210,6 +209,51 @@ api
   .get('/contracts')
   // Get a single contract by id
   .get('/contracts/:id')
+```
+</details>
+
+</details>
+
+</details>
+<details>
+<summary>
+2.6 Localstorage
+</summary>
+
+I had trouble with the api_key, so for shortage of time, copied all the generated data from my mock databse in `data` folder, and saved it in `localStorage`.
+
+```js
+// localStorageAPI.js
+// common skeleton for using in Slice creation for redux store
+const createAPI = (storageKey, initialData) => ({
+    getAll: () => getFromStorage(storageKey, initialData),
+    create: (item) => {
+        const items = createAPI(storageKey, initialData).getAll();
+        items.push(item);
+        saveToStorage(storageKey, items);
+        return item;
+    },
+    update: (id, updatedItem) => {
+        const items = createAPI(storageKey, initialData).getAll();
+        const index = items.findIndex(i => i.id === id);
+        if (index !== -1) {
+            items[index] = { ...items[index], ...updatedItem };
+            saveToStorage(storageKey, items);
+        }
+        return updatedItem;
+    },
+    delete: (id) => {
+        const items = createAPI(storageKey, initialData).getAll();
+        const filteredItems = items.filter(i => i.id !== id);
+        saveToStorage(storageKey, filteredItems);
+        return true;
+    }
+});
+// Creating specific APIs for each data type
+export const facilityAPI = createAPI(STORAGE_KEYS.FACILITIES, facilities);
+export const deviceAPI = createAPI(STORAGE_KEYS.DEVICES, devices);
+export const serviceVisitAPI = createAPI(STORAGE_KEYS.SERVICE_VISITS, serviceVisits);
+export const contractAPI = createAPI(STORAGE_KEYS.AMC_CONTRACTS, contracts);
 ```
 
 </details>
