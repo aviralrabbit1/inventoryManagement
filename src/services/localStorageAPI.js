@@ -1,7 +1,7 @@
 import facilities from "../data/facilities"
 import devices from "../data/devices"
 import serviceVisits from "../data/serviceVisits"
-import contracts from "../data/Contracts"
+import contracts from "../data/contracts"
 
 const STORAGE_KEYS = {    
     DEVICES: "devices",

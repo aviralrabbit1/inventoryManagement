@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deviceAPI } from "../../services/localstorageAPI"
+import { deviceAPI } from "../../services/localStorageAPI"
 import devices from "../../data/devices";
 
 const deviceSlice = createSlice({
