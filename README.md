@@ -387,9 +387,6 @@ const DeviceStatusChart = () => {
 
 </details>
 
-</details>
-
-
 <details>
 <summary>
 4.2 Facility and Devices Chart
@@ -459,5 +456,7 @@ const FacilityDeviceChart = () => {
 }
 
 ```
+
+</details>
 
 </details>
