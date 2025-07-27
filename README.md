@@ -388,3 +388,76 @@ const DeviceStatusChart = () => {
 </details>
 
 </details>
+
+
+<details>
+<summary>
+4.2 Facility and Devices Chart
+</summary>
+It depicts the number of devices in each facilty.
+
+```js
+// FacilityDeviceChart.js
+
+const FacilityDeviceChart = () => {
+  const devicesData = useSelector((state) => state.devices)
+  const facilities = useSelector((state) => state.facilities.facilities)
+
+  const chartData = React.useMemo(() => {
+    let facilityDeviceCount = {}
+
+    for(const device of devicesData) {      
+        facilityDeviceCount[device.facilityName] = (facilityDeviceCount[device.facilityName] || 0) + 1
+    }
+
+    return facilities
+      .map((facility) => ({
+        name: facility.facilityName.length > 20 ? facility.facilityName.substring(0, 15) + "..." : facility.facilityName,
+        fullName: facility.facilityName,
+        city: facility.city,
+        npi: facility.facilityNPI,
+        deviceCount: facility.deviceCount || 0,
+      }))
+      .sort((a, b) => b.id - a.id) // Sort by what you want, e.g., deviceCount
+  }, [devicesData, facilities])
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload
+      return (
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            p: 2,
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 1,
+            boxShadow: 2,
+          }}
+        >
+          <Typography variant="subtitle2" gutterBottom>
+            {data.fullName}
+          </Typography>
+          <Typography variant="body2">City: {data.city}</Typography>
+          <Typography variant="body2">FacilityNPI: {data.npi}</Typography>
+          <Typography variant="body2">Devices: {data.deviceCount}</Typography>
+        </Box>
+      )
+    }
+    return null
+  }
+  ...
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={chartData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} fontSize={10} />
+        <YAxis />
+        <Tooltip content={<CustomTooltip />} />
+        <Bar dataKey="deviceCount" fill="#2196f3" />
+      </BarChart>
+    </ResponsiveContainer>
+}
+
+```
+
+</details>

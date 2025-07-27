@@ -50,7 +50,7 @@ const Dashboard = () => {
       <div className="charts-container">      
         <AMCExpiryChart />
         <DeviceStatusChart /> 
-        {/* <FacilityDevicesChart /> */}
+        <FacilityDevicesChart />
         <ServiceVisitsChart />
         <BatteryLevelChart />
       </div>
