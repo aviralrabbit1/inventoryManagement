@@ -23,18 +23,7 @@ const DeviceStatusChart = () => {
       }
       statusCount[device.status] = (statusCount[device.status] || 0) + 1;
     }
-    // const statusCount = devices.reduce(
-    //   (acc, device) => {
-    //     acc[device.status] = (acc[device.status] || 0) + 1;
-    //     // console.log("Device status:", device.status, "Count:", acc[device.status]);
-    //     // console.log("Current accumulator:", acc);
-    //     return acc
-    //   },
-    //   {},
-    // )
-    // console.log("Status count:", statusCount);
-    // console.log("Object entries" ,Object.entries(statusCount));
-
+    
     return Object.entries(statusCount).map(([status, count]) => ({
       name: status,
       value: count,
