@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { facilityAPI } from "../../services/localstorageAPI"
+import { facilityAPI } from "../../services/localStorageAPI"
 import facilities from '../../data/facilities'
 
 const facilitySlice = createSlice({
