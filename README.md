@@ -460,7 +460,7 @@ const FacilityDeviceChart = () => {
 </details>
 
 <details>
-<summary>
+<summary id='#serviceVisit'>
 4.3 Service Visits Chart
 </summary>
 It depicts the service visits each month alongwith the purpose of visit.
@@ -506,5 +506,12 @@ const ServiceVisitsChart = () => {
 
 ```
 
+</details>
+
+<details>
+<summary>
+4.4 Contract Expiry Chart
+</summary>
+Similar to `Service Visits Chart`. 
 </details>
 </details>
