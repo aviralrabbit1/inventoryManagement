@@ -2,7 +2,6 @@ import React from "react"
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
 import { Card, CardContent, Typography, Box } from "@mui/material"
 import { useSelector } from "react-redux"
-// import devices from '../../data/devices'
 
 const COLORS = {
   online: "#4caf50",
@@ -33,7 +32,7 @@ const DeviceStatusChart = () => {
     //   },
     //   {},
     // )
-    console.log("Status count:", statusCount);
+    // console.log("Status count:", statusCount);
     // console.log("Object entries" ,Object.entries(statusCount));
 
     return Object.entries(statusCount).map(([status, count]) => ({
