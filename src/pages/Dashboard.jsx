@@ -12,7 +12,7 @@ import AMCExpiryChart from '../components/Charts/AMCExpiryChart.jsx';
 import DeviceStatusChart from '../components/Charts/DeviceStatusChart.jsx';
 import FacilityDevicesChart from '../components/Charts/FacilityDevicesChart.jsx';
 import ServiceVisitsChart from '../components/Charts/ServiceVisitsChart.jsx';
-import BatteryLevelChart from '../components/Charts/BatteryLevelChart.jsx';
+// import BatteryLevelChart from '../components/Charts/BatteryLevelChart.jsx';
 import { useSelector, useDispatch } from "react-redux"
 import { loadDevices } from "../store/slices/deviceSlice"
 import { loadFacilities } from "../store/slices/facilitySlice"
@@ -52,7 +52,7 @@ const Dashboard = () => {
         <DeviceStatusChart /> 
         <FacilityDevicesChart />
         <ServiceVisitsChart />
-        <BatteryLevelChart />
+        {/* <BatteryLevelChart /> */}
       </div>
     </Box>
   )

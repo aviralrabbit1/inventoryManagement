@@ -15,7 +15,7 @@ I chose react, javascript-swc.
 1.2 Install additionally required packages and dependencies (I kept adding as i went on about building the project)- 
 
 ```sh
-bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @reduxjs/toolkit react-redux recharts 
+bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @reduxjs/toolkit react-redux recharts axios
 ```
 
 </details>
@@ -460,7 +460,7 @@ const FacilityDeviceChart = () => {
 </details>
 
 <details>
-<summary>
+<summary id='#serviceVisit'>
 4.3 Service Visits Chart
 </summary>
 It depicts the service visits each month alongwith the purpose of visit.
@@ -506,5 +506,12 @@ const ServiceVisitsChart = () => {
 
 ```
 
+</details>
+
+<details>
+<summary>
+4.4 Contract Expiry Chart
+</summary>
+Similar to `Service Visits Chart`. 
 </details>
 </details>
