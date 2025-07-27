@@ -15,7 +15,7 @@ I chose react, javascript-swc.
 1.2 Install additionally required packages and dependencies (I kept adding as i went on about building the project)- 
 
 ```sh
-bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @reduxjs/toolkit react-redux
+bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @reduxjs/toolkit react-redux recharts 
 ```
 
 </details>
@@ -212,9 +212,6 @@ api
 ```
 </details>
 
-</details>
-
-</details>
 <details>
 <summary>
 2.6 Localstorage
@@ -255,6 +252,9 @@ export const deviceAPI = createAPI(STORAGE_KEYS.DEVICES, devices);
 export const serviceVisitAPI = createAPI(STORAGE_KEYS.SERVICE_VISITS, serviceVisits);
 export const contractAPI = createAPI(STORAGE_KEYS.AMC_CONTRACTS, contracts);
 ```
+
+</details>
+</details>
 
 </details>
 
@@ -317,3 +317,74 @@ const menuItems = [
 
 </details>
 
+
+<details>
+<summary>
+4. Charts
+</summary>
+I have used [Recharts](https://recharts.org/en-US) to create the charts.
+
+<details>
+<summary>
+4.1 Device Status
+</summary>
+Tells us the data/ratio about how many devices are `online`, `offline` or need `maintainence` by building a pie chart.
+All the charts are in `src/components/Charts/` folder.
+
+```js
+// DeviceStatusChart.js
+const COLORS = { // for respresenting the pie chart
+  online: "#4caf50",
+  offline: "#f44336",
+  maintenance: "#ff9800",
+}
+
+const DeviceStatusChart = () => {
+  // Fetch devices data from the redux store
+  const devicesState = useSelector((state) => state.devices)
+  const devices = [...devicesState] // Ensure devices is an array for the chart to work correctly
+
+  const statusData = React.useMemo(() => {
+    // Kee track of the status of each device
+    let statusCount = {};
+    for(const device of devices) {
+      if (!device.status) {
+        console.warn("Device without status found:", device);
+        continue; // Skip devices without a status
+      }
+      statusCount[device.status] = (statusCount[device.status] || 0) + 1;
+    }
+
+    return Object.entries(statusCount).map(([status, count]) => ({
+      name: status,
+      value: count,
+      color: COLORS[status.toLowerCase()],
+    }))
+  }, [devices])
+
+  ...
+    <PieChart>
+      <Pie
+        data={statusData}
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+        outerRadius={80}
+        fill="#8884d8"
+        dataKey="value"
+      >
+        {statusData.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={entry.color} />
+        ))}
+      </Pie>
+      <Tooltip content={<CustomTooltip />} />
+      <Legend />
+    </PieChart>
+}
+
+```
+
+</details>
+
+</details>

@@ -39,7 +39,7 @@ const getFromStorage = (key, defaultValue) => {
 
 const saveToStorage = (key, data) => {
   try {
-    localStorage.setItem(key, JSO(data))
+    localStorage.setItem(key, JSON.parse(data))
   } catch (error) {
     console.error(`Error saving to localStorage key ${key}:`, error)
   }
@@ -72,6 +72,25 @@ const createAPI = (storageKey, initialData) => ({
 
 // Creating specific APIs for each data type
 export const facilityAPI = createAPI(STORAGE_KEYS.FACILITIES, facilities);
+// console.log(facilityAPI.getAll()); // Debugging line to check initial data
 export const deviceAPI = createAPI(STORAGE_KEYS.DEVICES, devices);
 export const serviceVisitAPI = createAPI(STORAGE_KEYS.SERVICE_VISITS, serviceVisits);
-export const contractAPI = createAPI(STORAGE_KEYS.AMC_CONTRACTS, contracts);
+export const contractAPI = createAPI(STORAGE_KEYS.CONTRACTS, contracts);
+
+// Export data for backup
+export const exportAllData = () => {
+  const data = {
+    devices: deviceAPI.getAll(),
+    facilities: facilityAPI.getAll(),
+    serviceVisits: serviceVisitAPI.getAll(),
+    amcContracts: contractAPI.getAll(),
+  }
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `crm_backup_${new Date().toISOString().split('T')[0]}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+}

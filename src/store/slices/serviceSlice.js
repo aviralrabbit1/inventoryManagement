@@ -1,4 +1,4 @@
-import { createSlice} from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { serviceVisitAPI } from "../../services/localStorageAPI"
 import serviceVisits from '../../data/serviceVisits';
 

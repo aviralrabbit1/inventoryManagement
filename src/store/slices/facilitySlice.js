@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { facilityAPI } from "../../services/localstorageAPI"
 import facilities from '../../data/facilities'
 
 const facilitySlice = createSlice({
   name: "facilities",
-  initialState : facilities,
+  initialState : {facilities},
   reducers: {
     addFacility: (state, action) => {
       const newFacility = facilityAPI.create(action.payload)
@@ -21,9 +21,12 @@ const facilitySlice = createSlice({
       facilityAPI.delete(action.payload)
       state.facilities = state.facilities.filter((facility) => facility.id !== action.payload)
     },
-    loadFacilities: (state) => {
-      state.facilities = facilityAPI.getAll()
-    },
+    loadFacilities : (state) => createAsyncThunk(
+      'facilities',
+      async () => {
+        return facilityAPI.getAll(); // Fetch facilities from local storage
+      }
+    )
   },
 })
 
