@@ -21,7 +21,7 @@ const deviceSlice = createSlice({
       deviceAPI.delete(action.payload)
       state.devices = state.devices.filter((device) => device.id !== action.payload)
     },
-    loadDevices: (state) => {
+    loadDevices: async (state) => {
       state.devices = deviceAPI.getAll()
     },
     setLoading: (state, action) => {

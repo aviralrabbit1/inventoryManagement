@@ -6,8 +6,8 @@ import serviceSlice from "./slices/serviceSlice"
 
 export const store = configureStore({
   reducer: {
-    facilities: facilitySlice,
     devices: deviceSlice,
+    facilities: facilitySlice,
     contracts: contractSlice,
     services: serviceSlice,
   },
