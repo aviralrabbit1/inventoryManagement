@@ -322,7 +322,7 @@ const menuItems = [
 <summary>
 4. Charts
 </summary>
-I have used [Recharts](https://recharts.org/en-US) to create the charts.
+I have used [Recharts](https://recharts.org/) to create the charts.
 
 <details>
 <summary>
@@ -459,4 +459,52 @@ const FacilityDeviceChart = () => {
 
 </details>
 
+<details>
+<summary>
+4.2 Service Visits Chart
+</summary>
+It depicts the service visits each month alongwith the purpose of visit.
+
+```js
+// ServiceVisitsChart.js
+
+const ServiceVisitsChart = () => {  
+  const serviceVisits = useSelector((state) => state.services)
+  const chartData = React.useMemo(() => {
+    const data = serviceVisits.reduce((acc, visit) => {
+      const year = new Date(visit.date).getFullYear();
+      const month = new Date(visit.date).toLocaleString('default', { month: 'long' }) + ' ' + year;
+      if (!acc[month]) {
+        acc[month] = { month };
+      }
+      acc[month][visit.purpose] = (acc[month][visit.purpose] || 0) + 1;
+      console.log("acc: ", acc, typeof acc);
+      return acc;
+      
+    }, {});
+    // console.log(data);
+
+    return Object.values(data).map(item => ({
+      ...item,
+      Preventive: item.Preventive || 0,
+      Breakdown: item.Breakdown || 0,
+    })).sort((a, b) => new Date(a.month) - new Date(b.month)); // Sort according to date/month-year
+  }, [serviceVisits]);
+  ...
+    <ResponsiveContainer width="100%" height={350}>
+      <BarChart data={chartData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="month" angle={-45} textAnchor="end" height={100} fontSize={10} />
+        <YAxis />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend />
+        <Bar dataKey="Preventive" stackId="a" fill="#4caf50" />
+        <Bar dataKey="Breakdown" stackId="a" fill="#f44336" />
+      </BarChart>
+    </ResponsiveContainer>
+}
+
+```
+
+</details>
 </details>

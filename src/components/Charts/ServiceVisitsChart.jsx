@@ -17,36 +17,28 @@ const ServiceVisitsChart = () => {
   const chartData = React.useMemo(() => {
     const data = serviceVisits.reduce((acc, visit) => {
       const year = new Date(visit.date).getFullYear();
-      const month = new Date(visit.date).toLocaleString('default', { month: 'long' });
+      const month = new Date(visit.date).toLocaleString('default', { month: 'long' }) + ' ' + year;
       if (!acc[month]) {
         acc[month] = { month };
       }
       acc[month][visit.purpose] = (acc[month][visit.purpose] || 0) + 1;
+      // console.log("acc: ", acc, typeof acc);
       return acc;
+      
     }, {});
-    console.log(data);
+    // console.log(data);
 
     return Object.values(data).map(item => ({
       ...item,
       Preventive: item.Preventive || 0,
       Breakdown: item.Breakdown || 0,
-    }));
-    return serviceVisits.map((visit) => {
-      const month = new Date(visit.date).toLocaleString('default', { month: 'long' });
-      return {
-        // year,
-        month,
-        date: visit.date,
-        facilityNPI: visit.facilityNPI,
-        nextServiceDate: visit.nextServiceDate,
-        purpose: visit.purpose,
-      };
-    })
+    })).sort((a, b) => new Date(a.month) - new Date(b.month));
   }, [serviceVisits]);
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
+      // console.log("Tooltip Data:", payload);
       return (
         <Box
           sx={{
