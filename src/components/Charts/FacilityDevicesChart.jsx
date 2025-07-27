@@ -4,27 +4,29 @@ import { Card, CardContent, Typography, Box } from "@mui/material"
 import { useSelector } from "react-redux"
 
 const FacilityDeviceChart = () => {
-  const devices = useSelector((state) => state.devices.devices)
+  const devicesData = useSelector((state) => state.devices)
+  // console.log('devicesData: ', devicesData, typeof devicesData);
   const facilities = useSelector((state) => state.facilities.facilities)
+  // console.log('facilities: ', facilities, typeof facilities);
 
   const chartData = React.useMemo(() => {
-    const facilityDeviceCount = devices.reduce(
-      (acc, device) => {
-        acc[device.facilityName] = (acc[device.facilityName] || 0) + 1
-        return acc
-      },
-      {},
-    )
+    let facilityDeviceCount = {}
+
+    for(const device of devicesData) {      
+        facilityDeviceCount[device.facilityName] = (facilityDeviceCount[device.facilityName] || 0) + 1
+    }
+    // console.log('facilityDeviceCount: ', facilityDeviceCount); // 100
 
     return facilities
       .map((facility) => ({
-        name: facility.name.length > 20 ? facility.name.substring(0, 20) + "..." : facility.name,
-        fullName: facility.name,
-        deviceCount: facilityDeviceCount[facility.name] || 0,
-        type: facility.type,
+        name: facility.facilityName.length > 20 ? facility.facilityName.substring(0, 15) + "..." : facility.facilityName,
+        fullName: facility.facilityName,
+        city: facility.city,
+        npi: facility.facilityNPI,
+        deviceCount: facility.deviceCount || 0,
       }))
-      .sort((a, b) => b.deviceCount - a.deviceCount)
-  }, [devices, facilities])
+      .sort((a, b) => b.id - a.id) // Sort by what you want, e.g., deviceCount
+  }, [devicesData, facilities])
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -43,8 +45,9 @@ const FacilityDeviceChart = () => {
           <Typography variant="subtitle2" gutterBottom>
             {data.fullName}
           </Typography>
+          <Typography variant="body2">City: {data.city}</Typography>
+          <Typography variant="body2">FacilityNPI: {data.npi}</Typography>
           <Typography variant="body2">Devices: {data.deviceCount}</Typography>
-          <Typography variant="body2">Type: {data.type}</Typography>
         </Box>
       )
     }
@@ -57,10 +60,10 @@ const FacilityDeviceChart = () => {
         <Typography variant="h6" gutterBottom>
           Devices per Facility
         </Typography>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={350}>
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} fontSize={10} />
+            <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} fontSize={10} />
             <YAxis />
             <Tooltip content={<CustomTooltip />} />
             <Bar dataKey="deviceCount" fill="#2196f3" />

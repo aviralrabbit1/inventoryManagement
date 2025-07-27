@@ -71,7 +71,7 @@ const DeviceStatusChart = () => {
         <Typography variant="h6" gutterBottom>
           Device Status Distribution
         </Typography>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={350}>
           <PieChart>
             <Pie
               data={statusData}
