@@ -15,7 +15,7 @@ I chose react, javascript-swc.
 1.2 Install additionally required packages and dependencies (I kept adding as i went on about building the project)- 
 
 ```sh
-bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @reduxjs/toolkit react-redux recharts 
+bun add @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @reduxjs/toolkit react-redux recharts axios
 ```
 
 </details>
