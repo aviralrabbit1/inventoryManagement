@@ -10,7 +10,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
+    marginLeft: 0,
+    // `-${drawerWidth}px`,
     variants: [
       {
         props: ({ open }) => open,

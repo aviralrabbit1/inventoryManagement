@@ -30,8 +30,11 @@ const Sidebar = ({ open }) => {
 
   return (
       <Drawer
-        variant="persistent"
+        variant="temporary"
         anchor="left"
+        ModalProps={{
+          keepMounted: false,
+        }}
         open={open}
         sx={{
           width: drawerWidth,
