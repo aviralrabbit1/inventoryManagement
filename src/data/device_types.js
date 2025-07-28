@@ -1,5 +1,4 @@
-{
-    "deviceTypes" :[{"deviceID":"DEV001","deviceName":"Nebulizer"},
+const deviceTypes = [{"deviceID":"DEV001","deviceName":"Nebulizer"},
 {"deviceID":"DEV002","deviceName":"Autoclave"},
 {"deviceID":"DEV012","deviceName":"Anesthesia machine"},
 {"deviceID":"DEV006","deviceName":"CT scanner"},
@@ -13,4 +12,6 @@
 {"deviceID":"DEV004","deviceName":"EKG machine,"},
 {"deviceID":"DEV011","deviceName":"Electrocardiograph,"},
 {"deviceID":"DEV013","deviceName":"Defibrillator"},
-{"deviceID":"DEV001","deviceName":"Surgical laser"}]}
+{"deviceID":"DEV008","deviceName":"Surgical laser"}]
+
+export default deviceTypes;

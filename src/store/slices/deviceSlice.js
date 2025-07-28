@@ -8,21 +8,22 @@ const deviceSlice = createSlice({
   reducers: {
     addDevice: (state, action) => {
       const newDevice = deviceAPI.create(action.payload)
-      state.devices.push(newDevice)
+      state.push(newDevice)
     },
     updateDevice: (state, action) => {
       const updatedDevice = deviceAPI.update(action.payload.id, action.payload)
-      const index = state.devices.findIndex((device) => device.id === action.payload.id)
+      const index = state.findIndex((device) => device.id === action.payload.id)
       if (index !== -1) {
-        state.devices[index] = updatedDevice
+        state[index] = updatedDevice
       }
     },
     deleteDevice: (state, action) => {
       deviceAPI.delete(action.payload)
-      state.devices = state.devices.filter((device) => device.id !== action.payload)
+      console.log("state deviceID is",state.deviceID,'payload is', action.payload);
+      state = state.filter((device) => device.deviceID !== action.payload)
     },
     loadDevices: async (state) => {
-      state.devices = deviceAPI.getAll()
+      state = deviceAPI.getAll()
     },
     setLoading: (state, action) => {
       state.loading = action.payload

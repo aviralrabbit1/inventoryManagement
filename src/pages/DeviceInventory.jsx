@@ -18,17 +18,25 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Autocomplete,
 } from "@mui/material"
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material"
 import { useSelector, useDispatch } from "react-redux"
 import { addDevice, updateDevice, deleteDevice, loadDevices } from "../store/slices/deviceSlice"
+import deviceTypes from "../data/device_types.js";
 
 const DeviceInventory = () => {
   const dispatch = useDispatch()
   const devicesData = useSelector((state) => state.devices);
   const devices = [...devicesData];
   const facilities = useSelector((state) => state.facilities.facilities);
-  // console.log("devices:", devices);
+  // console.log("facilities:", facilities[0]);
+  // let m = new Map();
+  // for(let x of facilities) {
+  //     m.set(x.facilityNPI, (m.get(x.facilityNPI) || 0) +1);
+  // } 
+  // console.log(m)
+  console.log("devices:", devices[0]);
 
   const [open, setOpen] = useState(false)
   const [editingDevice, setEditingDevice] = useState(null)
@@ -65,6 +73,45 @@ const DeviceInventory = () => {
       })
     }
     setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    setEditingDevice(null)
+  }
+
+  const handleSubmit = () => {
+    const deviceData = {
+      ...formData,
+      id: editingDevice?.id || `DEV${Date.now()}`,
+      lastServiceDate: editingDevice?.lastServiceDate || new Date().toISOString().split("T")[0],
+      installationDate: editingDevice?.installationDate || new Date().toISOString().split("T")[0],
+      amcStatus: editingDevice?.amcStatus || "Active",
+      amcExpiryDate:
+        editingDevice?.amcExpiryDate || new Date(Date.now() + 365 * 24 * 60 * 60 * 2).toISOString().split("T")[0],
+    }
+
+    if (editingDevice) {
+      dispatch(updateDevice(deviceData))
+    } else {
+      dispatch(addDevice(deviceData))
+    }
+    handleClose()
+  }
+
+  const handleDelete = (serialNo) => {
+    if (window.confirm("Are you sure you want to delete this device?")) {
+      dispatch(deleteDevice(serialNo))
+    }
+  }
+
+  const handleFacilityChange = (facilityNPI) => {
+    const facility = facilities.find((f) => f.facilityNPI === facilityNPI)
+    setFormData({
+      ...formData,
+      facilityNPI,
+      facilityName: facility?.name || "",
+    })
   }
 
   return (
@@ -129,10 +176,10 @@ const DeviceInventory = () => {
                 </Box>
 
                 <Box sx={{ display: "flex", gap: 1 }}>
-                  <Button size="small" startIcon={<EditIcon />} >
+                  <Button size="small" startIcon={<EditIcon />} onClick={() => handleOpen(device)}>
                     Edit
                   </Button>
-                  <Button size="small" color="error" startIcon={<DeleteIcon />} >
+                  <Button size="small" color="error" startIcon={<DeleteIcon />} onClick={() => handleDelete(device.serialNo)}>
                     Delete
                   </Button>
                 </Box>
@@ -141,6 +188,142 @@ const DeviceInventory = () => {
           </Grid>
         ))}
       </Grid>
+
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogTitle>{editingDevice ? "Edit Device" : "Add New Device"}</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid item xs={12} sm={6}>
+                {/* <Autocomplete
+                  disablePortal
+                  options={deviceTypes}
+                  sx={{ width: 200 }}
+                  renderInput={(params) => 
+                    <TextField
+                      {...params}
+                      fullWidth
+                      label="Device Type"
+                      value={formData.deviceType}
+                      onChange={(e) => setFormData({ ...formData, model: e.target.value })}
+                    />                
+                }
+                /> */}
+              <FormControl fullWidth sx={{ width: 200 }}>
+                <InputLabel id="deviceTypeLabel" >Device Type</InputLabel>
+                <Select
+                  labelId="deviceTypeLabel"
+                  value={formData.deviceType}
+                  label="Device Type"
+                  onChange={(e) => setFormData({ ...formData, deviceType: e.target.value })}
+                >
+                  {deviceTypes.map((device) => (
+                    <MenuItem key={device.deviceID} value={device.deviceName}>
+                      {device.deviceName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="QR Code"
+                value={formData.qrCode}
+                onChange={(e) => setFormData({ ...formData, qrCode: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Serial Number"
+                value={formData.serialNo}
+                onChange={(e) => setFormData({ ...formData, serialNo: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth sx={{ width: 200 }}>
+                <InputLabel>Facility NPI</InputLabel>
+                <Select
+                  value={formData.facilityNPI}
+                  label="Facility NPI"
+                  onChange={(e) => handleFacilityChange(e.target.value)}
+                >
+                  {facilities.map((facility) => (
+                    <MenuItem key={facility.id} value={facility.facilityNPI}>
+                      {facility.facilityNPI}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {/* <Autocomplete
+                  disablePortal
+                  options={facilities}
+                  sx={{ width: 200 }}
+                  renderInput={(params) => 
+                    <TextField
+                      {...params}
+                      fullWidth
+                      label="Device Type"
+                      value={formData.facilityNPI}
+                      onChange={(e) => setFormData({ ...formData, facilityNPI: e.target.value })}
+                    />                
+                }
+                /> */}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth sx={{ width: 200 }}>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  value={formData.status}
+                  label="Status"
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                >
+                  <MenuItem value="online">Online</MenuItem>
+                  <MenuItem value="offline">Offline</MenuItem>
+                  <MenuItem value="maintenance">Maintenance</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Battery Level (%)"
+                type="number"
+                value={formData.batteryLevel}
+                onChange={(e) => setFormData({ ...formData, batteryLevel: Number.parseInt(e.target.value) })}
+                inputProps={{ min: 0, max: 100 }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth sx={{ width: 200 }}>
+                <InputLabel>Contract Type</InputLabel>
+                <Select
+                  value={formData.contractType}
+                  label="Contract Type"
+                  onChange={(e) => setFormData({ ...formData, contractType: e.target.value })}
+                >
+                  <MenuItem value="amc">AMC</MenuItem>
+                  <MenuItem value="cmc">CMC</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Assigned Engineer"
+                value={formData.assignedEngineer}
+                onChange={(e) => setFormData({ ...formData, assignedEngineer: e.target.value })}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit} variant="contained">
+            {editingDevice ? "Update" : "Add"} Device
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }
