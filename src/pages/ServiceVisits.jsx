@@ -32,7 +32,7 @@ import { downloadPDF, openPDFInNewTab } from "../utils/pdfUtils"
 const ServiceVisits = () => {
   const dispatch = useDispatch()
   const visits = useSelector((state) => state.services)
-  console.log(visits);
+  // console.log(visits);
   const devices = useSelector((state) => state.devices)
 
   const [open, setOpen] = useState(false)
@@ -50,12 +50,16 @@ const ServiceVisits = () => {
     attachments: [],
   })
 
-  const maxLengthNotes = 50; // Set the maximum character length for the shortened text
-  const [isNotesExpanded, setIsNotesExpanded] = useState(false);
-  const toggleNotes = () => {
-    setIsNotesExpanded(!isNotesExpanded);
+  const maxLengthNotes = 30; // Set the maximum character length for the shortened text
+  // const [isNotesExpanded, setIsNotesExpanded] = useState(false);
+  // const toggleNotes = () => {
+    //   setIsNotesExpanded(!isNotesExpanded);
+    // };
+  const [expandedRowIndex, setExpandedRowIndex] = useState(null);
+  const toggleRow = (index) => {
+    setExpandedRowIndex(expandedRowIndex === index ? null : index);
   };
-  const getShortenedNotes = (text) => {
+  const getShortenedNotes = (text, isNotesExpanded) => {
     if (text.length > maxLengthNotes && !isNotesExpanded) {
       return text.slice(0, maxLengthNotes) + '...';
     }
@@ -145,13 +149,21 @@ const ServiceVisits = () => {
                     size="small"
                   />
                 </TableCell> */}
-                <TableCell sx={{ maxHeight: 50, overflowY: 'auto', }}>
-                  <Typography variant="body2" onClick={toggleNotes} sx={{ cursor: 'pointer' }}>
-                    {getShortenedNotes(visit.notes)}
+                <TableCell sx={{ maxHeight: 50}}>
+                  <Typography variant="body2" onClick={(e) => {
+                    // console.log(e)
+                      toggleRow(visit.id)
+                    }
+                  } sx={{ cursor: 'pointer' }}>
+                    {getShortenedNotes(visit.notes, expandedRowIndex === visit.id)}
                   </Typography>
                   {visit.notes.length > maxLengthNotes && (
-                    <Typography variant="body2" onClick={toggleNotes} sx={{ cursor: 'pointer', color: 'primary.main' }}>
-                      {isNotesExpanded ? 'Show less' : 'Read more'}
+                    <Typography variant="body2" onClick={(e) => {                      
+                      // console.log("currenttarget:", e.currenttarget)
+                        toggleRow(visit.id)
+                      }
+                    } sx={{ cursor: 'pointer', color: 'primary.main' }}>
+                      {expandedRowIndex === visit.id ? 'Show less' : 'Read more'}
                     </Typography>
                   )}
                 </TableCell>
