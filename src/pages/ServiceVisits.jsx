@@ -22,11 +22,12 @@ import {
   TableRow,
   Paper,
 } from "@mui/material"
-import { Add as AddIcon, CloudUpload as UploadIcon } from "@mui/icons-material"
+import { Add as AddIcon, CloudUpload as UploadIcon, GetApp as DownloadIcon } from "@mui/icons-material"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import { useSelector, useDispatch } from "react-redux"
 import { addServiceVisit } from "../store/slices/serviceSlice"
-// import dayjs from "dayjs"
+import Aviral_Verma from '../assets/Aviral_Verma.pdf';
+import { downloadPDF, openPDFInNewTab } from "../utils/pdfUtils"
 
 const ServiceVisits = () => {
   const dispatch = useDispatch()
@@ -134,7 +135,19 @@ const ServiceVisits = () => {
                 </TableCell>
                 <TableCell>{visit.notes}</TableCell>
                 <TableCell>
-                  <Button size="small">{visit.attachments}</Button>
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    <Button size="small" onClick={() => openPDFInNewTab(Aviral_Verma)} variant="outlined">
+                      {visit.attachments}
+                    </Button>
+                    <Button
+                      size="small"
+                      onClick={() => downloadPDF(Aviral_Verma,visit.attachments)}
+                      variant="contained"
+                      startIcon={<DownloadIcon />}
+                    >
+                      Download
+                    </Button>
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}
