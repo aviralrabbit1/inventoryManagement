@@ -50,6 +50,18 @@ const ServiceVisits = () => {
     attachments: [],
   })
 
+  const maxLengthNotes = 50; // Set the maximum character length for the shortened text
+  const [isNotesExpanded, setIsNotesExpanded] = useState(false);
+  const toggleNotes = () => {
+    setIsNotesExpanded(!isNotesExpanded);
+  };
+  const getShortenedNotes = (text) => {
+    if (text.length > maxLengthNotes && !isNotesExpanded) {
+      return text.slice(0, maxLengthNotes) + '...';
+    }
+    return text;
+  };
+
   const handleSubmit = () => {
     const newVisit = {
       ...formData,
@@ -94,9 +106,9 @@ const ServiceVisits = () => {
         </Button>
       </Box>
 
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ height: 400, overflowY: 'auto' }}>
         <Table>
-          <TableHead>
+          <TableHead sx={{ position: "sticky", top: 0, zIndex: 5, backgroundColor: "white" }}>
             <TableRow>
               <TableCell>Device</TableCell>
               <TableCell>Facility</TableCell>
@@ -104,7 +116,7 @@ const ServiceVisits = () => {
               <TableCell>Next Service Date</TableCell>
               <TableCell>Engineer</TableCell>
               <TableCell>Purpose</TableCell>
-              <TableCell>Status</TableCell>
+              {/* <TableCell>Status</TableCell> */}
               <TableCell>Notes</TableCell>
               <TableCell>Attachments</TableCell>
             </TableRow>
@@ -124,7 +136,7 @@ const ServiceVisits = () => {
                     size="small"
                   />
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <Chip
                     label={visit.status}
                     color={
@@ -132,8 +144,17 @@ const ServiceVisits = () => {
                     }
                     size="small"
                   />
+                </TableCell> */}
+                <TableCell sx={{ maxHeight: 50, overflowY: 'auto', }}>
+                  <Typography variant="body2" onClick={toggleNotes} sx={{ cursor: 'pointer' }}>
+                    {getShortenedNotes(visit.notes)}
+                  </Typography>
+                  {visit.notes.length > maxLengthNotes && (
+                    <Typography variant="body2" onClick={toggleNotes} sx={{ cursor: 'pointer', color: 'primary.main' }}>
+                      {isNotesExpanded ? 'Show less' : 'Read more'}
+                    </Typography>
+                  )}
                 </TableCell>
-                <TableCell>{visit.notes}</TableCell>
                 <TableCell>
                   <Box sx={{ display: "flex", gap: 1 }}>
                     <Button size="small" onClick={() => openPDFInNewTab(Aviral_Verma)} variant="outlined">
